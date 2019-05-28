@@ -4,16 +4,35 @@
   padding: 0;
 }
 /* per il contenitore generale */
-.container{
+/* .container{
   width: 1170px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   flex-direction: column;
+} */
+header{
+  background-color: black;
+  height: 70px;
 }
+.header_left, .header_right{
+  height: 70px;
+  float: left;
+  width: 50%;
+}
+.header_right{
+  text-align: right;
+}
+.header_left h1{
+  margin-left: 20px;
+  color: red;
+  line-height: 70px;
+}
+
 /* per il contenitore dell'input text e del bottone (link) */
-.container_search{
-  margin-top: 20px;
+.header_right .container_search{
+  margin: 20px 0;   /* (70-30)/2 */
+  margin-right: 20px;
 }
 /* per la casella input */
 .input_search_movie{
@@ -24,18 +43,35 @@
 a.search{
   text-decoration: none;
   padding: 7px 20px;
-  color: white;
+  color: black;
   border-radius: 20px;
-  background-color: black;
+  background-color: white;
+  font-weight: bold;
 }
 /* per il contenitore dei risultati della ricerca */
-.search_results{
-  margin-top: 10px;
-  height: auto;
+.container_results{
+  /* margin-top: 10px; */
   width: 100%;
-  text-align: center;
+  min-height: calc(100vh - 70px);
+  background-color: #1a1f28;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+.movie{
+  margin-top: 10px;
+  width: 300px;
+  height: 150px;
 }
 /* per gli span */
-span.red{
+/* span.red{
   color: red;
+} */
+h4{
+  color: #c3c6cc;
+  /* font-weight: lighter; */
+}
+.yellow{
+  color: yellow;
 }

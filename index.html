@@ -3,31 +3,48 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
     <title>Boolflix</title>
   </head>
   <body>
-    <!-- contenitore totale -->
-    <div class="container">
-      <!-- contenitore della casella input e del bottone (link nel mio caso) -->
-      <div class="container_search">
-        <input class="input_search_movie" type="text" name="" value="" placeholder="Digita qui il film da cercare">
-        <a class="search" onclick="return false" href="#">Cerca</a>
+
+    <!-- contenitore della casella input e del bottone (link nel mio caso) -->
+    <header>
+      <div class="header_left">
+        <h1>BOOLFLIX</h1>
       </div>
-      <!-- contenitore che conterrà tutti i risultati della ricerca -->
-      <div class="search_results">
+      <div class="header_right">
+        <div class="container_search">
+          <input class="input_search_movie" type="text" name="" value="" placeholder="Digita qui il film da cercare">
+          <a class="search" onclick="return false" href="#">Cerca</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- contenitore totale -->
+    <!-- <div class="container"> -->
+    <!-- contenitore che conterrà tutti i risultati della ricerca -->
+      <div class="container_results">
       </div>
     </div>
 
     <script src="main.js"></script>
     <script id="template_search_film" type="text/x-handlebars-template">
-      <h4>{{Numero_risultato}}</h4>
-      <h4>Titolo cercato <span class="red">{{title}}</span></h4>
-      <h4>Titolo originale <span class="red">{{original_title}}</span></h4>
-      <h4>Lingua <span class="red">{{language}}</span></h4>
-      <h4>Voto <span class="red">{{vote}}</span></h4>
-      <br>
+      <div class="movie">
+        <!-- <h4>{{Numero_risultato}}</h4> -->
+        <h4>Titolo: <span>{{title}}</span></h4>
+        <h4>Titolo originale: <span>{{original_title}}</span></h4>
+        <h4>Lingua: <span>{{language}}</span></h4>
+        <h4>Voto: <span>{{vote}}
+          <i data-number="1" class="fas fa-star"></i>
+          <i data-number="2" class="fas fa-star"></i>
+          <i data-number="3" class="fas fa-star"></i>
+          <i data-number="4" class="fas fa-star"></i>
+          <i data-number="5" class="fas fa-star"></i>
+        </span></h4>
+      <div>
     </script>
   </body>
 </html>
