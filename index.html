@@ -23,8 +23,6 @@
       </div>
     </header>
 
-    <!-- contenitore totale -->
-    <!-- <div class="container"> -->
     <!-- contenitore che conterrà tutti i risultati della ricerca -->
       <div class="container_results">
       </div>
@@ -32,19 +30,25 @@
 
     <script src="main.js"></script>
     <script id="template_search_film" type="text/x-handlebars-template">
-      <div class="movie">
+      <div class="movie" data-id="{{id}}">
         <!-- <h4>{{Numero_risultato}}</h4> -->
         <h4>Titolo: <span>{{title}}</span></h4>
         <h4>Titolo originale: <span>{{original_title}}</span></h4>
-        <h4>Lingua: <span>{{language}}</span></h4>
-        <h4>Voto: <span>{{vote}}
-          <i data-number="1" class="fas fa-star"></i>
-          <i data-number="2" class="fas fa-star"></i>
-          <i data-number="3" class="fas fa-star"></i>
-          <i data-number="4" class="fas fa-star"></i>
-          <i data-number="5" class="fas fa-star"></i>
-        </span></h4>
+        <h4 class="language">Lingua: <span>{{language}}</span></h4>
+        <h4>Voto:
+          <span class="vote">{{vote}}</span>
+          <span class="stelline">
+            <i data-number="1" class="fas fa-star"></i>
+            <i data-number="2" class="fas fa-star"></i>
+            <i data-number="3" class="fas fa-star"></i>
+            <i data-number="4" class="fas fa-star"></i>
+            <i data-number="5" class="fas fa-star"></i>
+          </span>
+        </h4>
       <div>
+    </script>
+    <script id="template_bandiere" type="text/x-handlebars-template">
+      <img src="{{bandiera}}">
     </script>
   </body>
 </html>
