@@ -55,14 +55,15 @@ a.search{
   min-height: calc(100vh - 70px);
   background-color: #1a1f28;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   padding: 10px;
 }
 .movie{
   margin-top: 10px;
   width: 300px;
-  height: 150px;
+  margin: 15px;
+  height: auto;
 }
 h4{
   color: #c3c6cc;
