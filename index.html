@@ -32,6 +32,7 @@
     <script id="template_search_film" type="text/x-handlebars-template">
       <div class="movie" data-id="{{id}}">
         <!-- <h4>{{Numero_risultato}}</h4> -->
+        <img class="copertina" src="{{image}}">
         <h4>Titolo: <span>{{title}}</span></h4>
         <h4>Tipo: <span>{{type}}</span></h4>
         <h4>Titolo originale: <span>{{original_title}}</span></h4>
@@ -49,7 +50,7 @@
       <div>
     </script>
     <script id="template_bandiere" type="text/x-handlebars-template">
-      <img src="{{bandiera}}">
+      <img class="bandiera" src="{{bandiera}}">
     </script>
   </body>
 </html>

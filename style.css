@@ -34,6 +34,9 @@ header{
   margin: 20px 0;   /* (70-30)/2 */
   margin-right: 20px;
 }
+body{
+  background-color: #1a1f28;
+}
 /* per la casella input */
 .input_search_movie{
   width: 200px;
@@ -51,27 +54,46 @@ a.search{
 /* per il contenitore dei risultati della ricerca */
 .container_results{
   /* margin-top: 10px; */
-  width: 100%;
+  width: 1170px;
+  margin: 0 auto;
   min-height: calc(100vh - 70px);
-  background-color: #1a1f28;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 10px;
 }
+/* per le card film */
 .movie{
   margin-top: 10px;
-  width: 300px;
-  margin: 15px;
-  height: auto;
+  width: 250px;
+  margin: 15px 18px;
+  height: 350px;
+  padding: 10px;
+  position: relative;
 }
+/* per i campi h4 del template  */
 h4{
   color: #c3c6cc;
+  font-size: 14px;
+  padding: 5px;
 }
+/* per colorare le stelline di giallo */
 .yellow{
   color: yellow;
 }
-img{
+/* per le immagini di copertina */
+img.copertina{
+  width: 250px;
+  height: 350px;
+  position: absolute;
+}
+/* quando passo il mouse sopra */
+img.copertina:hover{
+  transition: 0.7s;
+  opacity: 0;
+}
+/* per le bandierine */
+img.bandiera{
   width: 15px;
   height: 15px;
 }
