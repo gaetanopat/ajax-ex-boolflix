@@ -45,7 +45,6 @@ a.search{
 }
 /* per il contenitore dei risultati della ricerca */
 .container_results{
-  /* margin-top: 10px; */
   width: 1170px;
   margin: 0 auto;
   min-height: calc(100vh - 70px);
@@ -67,7 +66,7 @@ a.search{
 h4{
   color: #c3c6cc;
   font-size: 14px;
-  padding: 5px;
+  padding: 2px 5px;
 }
 /* per colorare le stelline di giallo */
 .yellow{

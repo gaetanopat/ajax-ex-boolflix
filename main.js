@@ -50,7 +50,6 @@ function cercaFilm(api, img, film){
   // funzione compilatrice
   var template_search_film_function = Handlebars.compile(info_film);
 
-
   $.ajax({
     url: api + '/search/movie',
     method: 'get',
@@ -76,6 +75,7 @@ function cercaFilm(api, img, film){
             language: search_result.results[i].original_language,
             vote: search_result.results[i].vote_average,
           }
+
           var html = template_search_film_function(handlebars_movie);
           // appendo al container
           $('.container_results').append(html);
@@ -85,6 +85,8 @@ function cercaFilm(api, img, film){
           creaBandiera(handlebars_movie.id, handlebars_movie.language);
           // funzione per il cast dei film
           castFilm(api, handlebars_movie.id);
+          // funzione per il genere dei film
+          genereFilm(api, search_result.results[i].genre_ids, handlebars_movie.id);
         }
       }else{
         // se l'utente ha inserito un film che non esiste
@@ -97,7 +99,9 @@ function cercaFilm(api, img, film){
   });
 }
 
+// per la ricerca di una serie
 function cercaSerie(api ,img, film){
+  // codice da clonare
   var info_film = $('#template_search_film').html();
   // funzione compilatrice
   var template_search_film_function = Handlebars.compile(info_film);
@@ -112,7 +116,7 @@ function cercaSerie(api ,img, film){
     success: function (search_result) {
       console.log('serie');
       console.log(search_result);
-      // controllo che ci siano risultati per il film che cerca l'utente
+      // controllo che ci siano risultati per la serie che cerca l'utente
       if(search_result.results.length > 0){
         // oggetto che utilizzerò per popolare l'html
         var handlebars_movie;
@@ -136,9 +140,11 @@ function cercaSerie(api ,img, film){
           creaBandiera(handlebars_movie.id, handlebars_movie.language);
           // funzione per il cast delle serie
           castSerie(api, handlebars_movie.id);
+          // funzione per il genere delle serie
+          genereSerie(api, search_result.results[i].genre_ids, handlebars_movie.id);
         }
       }else{
-        // se l'utente ha inserito un film che non esiste
+        // se l'utente ha inserito una serie che non esiste
         alert('Nessuna SERIE con questo titolo');
       }
     },
@@ -186,7 +192,7 @@ function creaBandiera(id, lingua){
         bandiera: visualizzaBandiera(id, lingua)
       }
       var html2 = template_bandiere_function(handlebars_bandiere);
-      // appendo all0h4.language del template_search_film
+      // appendo all'h4.language del template_search_film
       lingua_movie.append(html2);
     };
   });
@@ -219,9 +225,11 @@ function visualizzaBandiera(id, lingua){
 }
 
 function controlloImmagine(img, immagine){
+  // se l'immagine esiste
   if(immagine != null){
     return img + 'w342' + immagine;
   } else {
+    // se non esiste
     return 'img/nofilm.jpg';
   };
 };
@@ -240,7 +248,7 @@ function castFilm(api, id){
         // mostro solo i primi 5
         for(var i = 0; i < 5; i++){
           // per ogni movie che sto guardando
-          $('div.movie[data-id="' + id + '"]').each(function(){
+          $('div.movie[data-id="' + id + '"] .cast').each(function(){
             $(this).append('<h4>' + cast.cast[i].name + '</h4>');
           });
         }
@@ -248,14 +256,14 @@ function castFilm(api, id){
       // se il numero di attori va da 1 a 5 mostro quelli che esistono
       else if (cast.cast.length > 0 && cast.cast.length <= 5){
         for(var i = 0; i < cast.cast.length; i++){
-          $('div.movie[data-id="' + id + '"]').each(function(){
+          $('div.movie[data-id="' + id + '"] .cast').each(function(){
             $(this).append('<h4>' + cast.cast[i].name + '</h4>');
           });
         }
       }
       // se non ci sono proprio attori, quindi = 0
       else if (cast.cast.length == 0){
-        $('div.movie[data-id="' + id + '"]').each(function(){
+        $('div.movie[data-id="' + id + '"] .cast').each(function(){
           $(this).append('<h4>Non disponibile</h4>');
         });
       }
@@ -280,7 +288,7 @@ function castSerie(api, id){
         // mostro solo i primi 5
         for(var i = 0; i < 5; i++){
           // per ogni movie che sto guardando
-          $('div.movie[data-id="' + id + '"]').each(function(){
+          $('div.movie[data-id="' + id + '"] .cast').each(function(){
             $(this).append('<h4>' + cast.cast[i].name + '</h4>');
           });
         }
@@ -288,14 +296,14 @@ function castSerie(api, id){
       // se il numero di attori va da 1 a 5 mostro quelli che esistono
       else if (cast.cast.length > 0 && cast.cast.length <= 5){
         for(var i = 0; i < cast.cast.length; i++){
-          $('div.movie[data-id="' + id + '"]').each(function(){
+          $('div.movie[data-id="' + id + '"] .cast').each(function(){
             $(this).append('<h4>' + cast.cast[i].name + '</h4>');
           });
         }
       }
       // se non ci sono proprio attori, quindi = 0
       else if (cast.cast.length == 0){
-        $('div.movie[data-id="' + id + '"]').each(function(){
+        $('div.movie[data-id="' + id + '"] .cast').each(function(){
           $(this).append('<h4>Non disponibile</h4>');
         });
       }
@@ -305,3 +313,89 @@ function castSerie(api, id){
     }
   });
 }
+
+// per i generi dei film
+function genereFilm(api, genres, id){
+  // array di tutti i generi dei film
+  var generiFilm = ['Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery', 'Romance', 'Science', 'Fiction', 'V Movie', 'Thriller', 'War', 'Western'];
+  // array dei generi che corrispondono al film che stiamo guardando
+  var generiRecuperati = [];
+  // chiamo i generi dei film
+  $.ajax({
+    url: api + '/genre/movie/list',
+    method: 'get',
+    data: {
+      api_key: '1cd2b33115f891c68dafc6468ce95d73',
+    },
+    success: function (genre_result) {
+      // ciclo più esterno, per tutti i generi esistenti per i film (20 in tutto) da 0 a 19
+      for (var i = 0; i < genre_result.genres.length; i++) {
+        // ciclo più interno, per i generi del film che stiamo guardando
+        for (var j = 0; j < genres.length; j++) {
+          // se l'id dei generi dei film in generale == id del genere del film che stiamo guardando
+          if(genre_result.genres[i].id == genres[j]){
+            // pusho il nome relativo all'id del genere del film che stiamo guardando nell'array generiRecuperati
+            generiRecuperati.push(genre_result.genres[i].name);
+          }
+        }
+      }
+      console.log(generiRecuperati);
+      // ciclo l'array dei generiRecuperati
+      for (var l = 0; l < generiRecuperati.length; l++) {
+        // se l'array generiFilm contiene il nome del genere nell'array generiRecuperati
+        if (generiFilm.includes(generiRecuperati[l])) {
+          $('div.movie[data-id="' + id + '"] .generi .msg_errore').hide();
+          // lo aggiungo alla scheda
+          $('div.movie[data-id="' + id + '"] .generi').append('<h4>' + generiRecuperati[l] + '</h4>');
+        }
+      }
+
+    },
+    error: function (richiesta, stato, errori) {
+      alert("E' avvenuto un errore. ");
+    }
+  });
+};
+
+// per i generi delle serie
+function genereSerie(api, genres, id){
+  // array di tutti i generi delle serie
+  var generiSerie = ['Action & Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Kids', 'Mystery', 'News', 'Reality', 'Sci-Fi & Fantasy', 'Soap', 'Talk', 'War & Politics', 'Western'];
+  // array dei generi che corrispondono alla serie che stiamo guardando
+  var generiRecuperati = [];
+  // chiamo i generi delle serie
+  $.ajax({
+    url: api + '/genre/tv/list',
+    method: 'get',
+    data: {
+      api_key: '1cd2b33115f891c68dafc6468ce95d73',
+    },
+    success: function (genre_result) {
+      // ciclo più esterno, per tutti i generi esistenti per le serie (16 in tutto) da 0 a 15
+      for (var i = 0; i < genre_result.genres.length; i++) {
+        // ciclo più interno, per i generi della serie che stiamo guardando
+        for (var j = 0; j < genres.length; j++) {
+          // se l'id dei generi delle serie in generale == id del genere della serie che stiamo guardando
+          if(genre_result.genres[i].id == genres[j]){
+            // pusho il nome relativo all'id del genere della serie che stiamo guardando nell'array generiRecuperati
+            generiRecuperati.push(genre_result.genres[i].name);
+          }
+        }
+      }
+      console.log(generiRecuperati);
+      // ciclo l'array dei generiRecuperati
+      for (var l = 0; l < generiRecuperati.length; l++) {
+        // se l'array generiSerie contiene il nome del genere nell'array generiRecuperati
+        if (generiSerie.includes(generiRecuperati[l])) {
+          $('div.movie[data-id="' + id + '"] .generi .msg_errore').hide();
+          // lo aggiungo alla scheda
+          $('div.movie[data-id="' + id + '"] .generi').append('<h4>' + generiRecuperati[l] + '</h4>');
+        }
+      }
+
+    },
+    error: function (richiesta, stato, errori) {
+      alert("E' avvenuto un errore. ");
+    }
+  });
+};
