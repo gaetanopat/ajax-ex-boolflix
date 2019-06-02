@@ -3,14 +3,6 @@
   margin: 0;
   padding: 0;
 }
-/* per il contenitore generale */
-/* .container{
-  width: 1170px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-} */
 header{
   background-color: black;
   height: 70px;

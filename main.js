@@ -82,7 +82,9 @@ function cercaFilm(api, img, film){
           // funzione per le stelline
           visualizzaStelline(handlebars_movie.id, handlebars_movie.vote);
           // funzione per le bandiere
-          creaBandiera(handlebars_movie.id, handlebars_movie.language)
+          creaBandiera(handlebars_movie.id, handlebars_movie.language);
+          // funzione per il cast dei film
+          castFilm(api, handlebars_movie.id);
         }
       }else{
         // se l'utente ha inserito un film che non esiste
@@ -93,8 +95,7 @@ function cercaFilm(api, img, film){
       alert("E' avvenuto un errore. ");
     }
   });
-  }
-
+}
 
 function cercaSerie(api ,img, film){
   var info_film = $('#template_search_film').html();
@@ -132,7 +133,9 @@ function cercaSerie(api ,img, film){
           // funzione per le stelline
           visualizzaStelline(handlebars_movie.id, handlebars_movie.vote);
           // funzione per le bandiere
-          creaBandiera(handlebars_movie.id, handlebars_movie.language)
+          creaBandiera(handlebars_movie.id, handlebars_movie.language);
+          // funzione per il cast delle serie
+          castSerie(api, handlebars_movie.id);
         }
       }else{
         // se l'utente ha inserito un film che non esiste
@@ -185,9 +188,10 @@ function creaBandiera(id, lingua){
       var html2 = template_bandiere_function(handlebars_bandiere);
       // appendo all0h4.language del template_search_film
       lingua_movie.append(html2);
-    }
+    };
   });
-}
+};
+
 // funzione per visualizzare la bandiera corrispondente alla lingua
 function visualizzaBandiera(id, lingua){
   // prendo l'h4.language del movie che sto ciclando
@@ -197,27 +201,107 @@ function visualizzaBandiera(id, lingua){
       // nascondo la lingua scritta in stringa
       lingua_movie.children('span').hide();
       // ritorno l'immagine
-      return 'https://cdn1.iconfinder.com/data/icons/rounded-flat-country-flag-collection-1/2000/it-01.png';
+      return 'img/it.png';
       break;
     case 'fr':
       // nascondo la lingua scritta in stringa
       lingua_movie.children('span').hide();
       // ritorno l'immagine
-      return 'https://cdn1.iconfinder.com/data/icons/european-country-flags/83/france-512.png';
+      return 'img/fr.png';
       break;
     // caso default, 'en'
     default:
       // nascondo la lingua scritta in stringa
       lingua_movie.children('span').hide();
       // ritorno l'immagine
-      return 'https://cdn1.iconfinder.com/data/icons/world-flags-circular/1000/Flag_of_United_Kingdom_-_Circle-512.png';
-  }
+      return 'img/en.png';
+  };
 }
 
 function controlloImmagine(img, immagine){
   if(immagine != null){
     return img + 'w342' + immagine;
   } else {
-    return 'https://www.tempostretto.it/wp-content/uploads/2013/09/pellicolacine_0.jpg';
-  }
+    return 'img/nofilm.jpg';
+  };
+};
+
+// per vedere il cast dei film
+function castFilm(api, id){
+  $.ajax({
+    url: api + '/movie/' + id + '/credits',
+    method: 'get',
+    data: {
+      api_key: '1cd2b33115f891c68dafc6468ce95d73',
+    },
+    success: function (cast) {
+      // se ci sono + di 5 attori
+      if (cast.cast.length > 5) {
+        // mostro solo i primi 5
+        for(var i = 0; i < 5; i++){
+          // per ogni movie che sto guardando
+          $('div.movie[data-id="' + id + '"]').each(function(){
+            $(this).append('<h4>' + cast.cast[i].name + '</h4>');
+          });
+        }
+      }
+      // se il numero di attori va da 1 a 5 mostro quelli che esistono
+      else if (cast.cast.length > 0 && cast.cast.length <= 5){
+        for(var i = 0; i < cast.cast.length; i++){
+          $('div.movie[data-id="' + id + '"]').each(function(){
+            $(this).append('<h4>' + cast.cast[i].name + '</h4>');
+          });
+        }
+      }
+      // se non ci sono proprio attori, quindi = 0
+      else if (cast.cast.length == 0){
+        $('div.movie[data-id="' + id + '"]').each(function(){
+          $(this).append('<h4>Non disponibile</h4>');
+        });
+      }
+    },
+    error: function (richiesta, stato, errori) {
+      alert("E' avvenuto un errore. ");
+    }
+  });
+};
+
+// per vedere il cast delle serie
+function castSerie(api, id){
+  $.ajax({
+    url: api + '/tv/' + id + '/credits',
+    method: 'get',
+    data: {
+      api_key: '1cd2b33115f891c68dafc6468ce95d73',
+    },
+    success: function (cast) {
+      // se ci sono + di 5 attori
+      if (cast.cast.length > 5) {
+        // mostro solo i primi 5
+        for(var i = 0; i < 5; i++){
+          // per ogni movie che sto guardando
+          $('div.movie[data-id="' + id + '"]').each(function(){
+            $(this).append('<h4>' + cast.cast[i].name + '</h4>');
+          });
+        }
+      }
+      // se il numero di attori va da 1 a 5 mostro quelli che esistono
+      else if (cast.cast.length > 0 && cast.cast.length <= 5){
+        for(var i = 0; i < cast.cast.length; i++){
+          $('div.movie[data-id="' + id + '"]').each(function(){
+            $(this).append('<h4>' + cast.cast[i].name + '</h4>');
+          });
+        }
+      }
+      // se non ci sono proprio attori, quindi = 0
+      else if (cast.cast.length == 0){
+        $('div.movie[data-id="' + id + '"]').each(function(){
+          $(this).append('<h4>Non disponibile</h4>');
+        });
+      }
+    },
+    error: function (richiesta, stato, errori) {
+      alert("E' avvenuto un errore. ");
+    }
+  });
 }
